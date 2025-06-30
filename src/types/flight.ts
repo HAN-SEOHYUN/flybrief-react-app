@@ -1,7 +1,12 @@
 export interface Flight {
-  id: string;
-  airline: string;
-  flightNumber: string;
-  departure: string;
-  arrival: string;
+  airlineCodeIata: string;
+  departureAirportIataCode: string;
+  arrivalAirportIataCode: string;
+  aircraftType: string;
+  mealService: string;
+  flightDuration: string;
+  scheduledArrivalDate: string;
+  scheduledArrivalTime: string;
+  scheduledDepartureDate: string;
+  scheduledDepartureTime: string;
 }
