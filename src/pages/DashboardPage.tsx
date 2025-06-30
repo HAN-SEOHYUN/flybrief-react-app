@@ -1,18 +1,28 @@
 import { useFlightContext } from "../context/FlightContext";
 import { FlightCard } from "../components/FlightCard";
+import { FlightSearchForm } from "../components/FlightSearchForm";
+import styled from "styled-components";
+
+const PageWrapper = styled.div`
+`;
+
+const FlightGrid = styled.div`
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+`;
 
 export const DashboardPage = () => {
-//   const { flights, loading, error } = useFlightContext();
-
-//   if (loading) return <p className="text-center mt-10">Loading flights...</p>;
-//   if (error) return <p className="text-center mt-10 text-red-500">Error: {error}</p>;
+  const { flights } = useFlightContext();
 
   return (
-    <div className="p-6 grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        hello wolrd
-      {/* {flights.map((flight) => (
-        <FlightCard key={flight.id} flight={flight} />
-      ))} */}
-    </div>
+    <PageWrapper>
+      <FlightSearchForm />
+      <FlightGrid>
+        {flights.map((flight, index) => (
+          <FlightCard key={index} flight={flight} />
+        ))}
+      </FlightGrid>
+    </PageWrapper>
   );
 };
