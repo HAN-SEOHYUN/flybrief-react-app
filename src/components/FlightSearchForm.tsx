@@ -1,9 +1,12 @@
-import { useState } from "react";
+// ✅ src/components/FlightSearchForm.tsx
+import { useState, useRef } from "react";
 import { useFlightContext } from "../context/FlightContext";
 import { fetchFlights } from "../api/flightApi";
 import { fetchAirportSuggestions } from "../api/airportApi";
 import { ArrowLeftRight } from "lucide-react";
 import styled from "styled-components";
+import { SuggestionsList } from "./SuggestionsList";
+import { useClickOutside } from "../hooks/useClickOutside";
 
 const Container = styled.div`
   justify-items: center;
@@ -21,7 +24,7 @@ const Form = styled.form`
   border-radius: 0.5rem;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
-  overflow-x: auto;
+  overflow: visible;
 `;
 
 const InputWrapper = styled.div`
@@ -47,29 +50,6 @@ const Input = styled.input`
   font-size: 1rem;
 `;
 
-const SuggestionsList = styled.ul`
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid #ccc;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 10;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-`;
-
-const SuggestionItem = styled.li`
-  padding: 0.5rem;
-  cursor: pointer;
-  &:hover {
-    background: #f0f0f0;
-  }
-`;
-
 const SwapButton = styled.button`
   background: #eee;
   border-radius: 9999px;
@@ -87,7 +67,7 @@ const SwapButton = styled.button`
 const SubmitButton = styled.button`
   height: 53px;
   padding: 0 1.5rem;
-  background-color: #00a4dc; /* SkyScanner 스타일 */
+  background-color: #00a4dc;
   color: white;
   font-weight: 600;
   font-size: 1rem;
@@ -106,23 +86,21 @@ const SubmitButton = styled.button`
   }
 `;
 
-type AirportSuggestion = {
-  id: number;
-  iataCode: string;
-  airportNameEn: string;
-  airportNameKr: string;
-};
-
 export const FlightSearchForm = () => {
   const [from, setFrom] = useState("ICN");
   const [to, setTo] = useState("BNE");
   const [date, setDate] = useState("2025-06-20");
   const { setFlights } = useFlightContext();
+  const fromRef = useRef<HTMLDivElement>(null);
+  const toRef = useRef<HTMLDivElement>(null);
 
-  const [fromSuggestions, setFromSuggestions] = useState<AirportSuggestion[]>([]);
-  const [toSuggestions, setToSuggestions] = useState<AirportSuggestion[]>([]);
+  const [fromSuggestions, setFromSuggestions] = useState([]);
+  const [toSuggestions, setToSuggestions] = useState([]);
 
-  const handleSuggestions = async (keyword: string, target: "from" | "to") => {
+  useClickOutside(fromRef, () => setFromSuggestions([]));
+  useClickOutside(toRef, () => setToSuggestions([]));
+
+  const handleSuggestions = async (keyword, target) => {
     if (!keyword.trim()) return;
     try {
       const data = await fetchAirportSuggestions(keyword);
@@ -134,7 +112,7 @@ export const FlightSearchForm = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const data = await fetchFlights(from, to, date, date);
@@ -152,7 +130,7 @@ export const FlightSearchForm = () => {
   return (
     <Container>
       <Form onSubmit={handleSubmit} autoComplete="off">
-        <InputWrapper>
+        <InputWrapper ref={fromRef}>
           <InputLabel htmlFor="from">출발지</InputLabel>
           <Input
             id="from"
@@ -164,28 +142,20 @@ export const FlightSearchForm = () => {
               handleSuggestions(value, "from");
             }}
           />
-          {fromSuggestions.length > 0 && (
-            <SuggestionsList>
-              {fromSuggestions.map((item) => (
-                <SuggestionItem
-                  key={item.id}
-                  onClick={() => {
-                    setFrom(item.iataCode);
-                    setFromSuggestions([]);
-                  }}
-                >
-                  {item.airportNameKr} ({item.iataCode})
-                </SuggestionItem>
-              ))}
-            </SuggestionsList>
-          )}
+          <SuggestionsList
+            suggestions={fromSuggestions}
+            onSelect={(iataCode) => {
+              setFrom(iataCode);
+              setFromSuggestions([]);
+            }}
+          />
         </InputWrapper>
 
         <SwapButton type="button" onClick={handleSwap} title="Swap from/to">
           <ArrowLeftRight size={20} color="#333" />
         </SwapButton>
 
-        <InputWrapper>
+        <InputWrapper ref={toRef}>
           <InputLabel htmlFor="to">도착지</InputLabel>
           <Input
             id="to"
@@ -197,21 +167,13 @@ export const FlightSearchForm = () => {
               handleSuggestions(value, "to");
             }}
           />
-          {toSuggestions.length > 0 && (
-            <SuggestionsList>
-              {toSuggestions.map((item) => (
-                <SuggestionItem
-                  key={item.id}
-                  onClick={() => {
-                    setTo(item.iataCode);
-                    setToSuggestions([]);
-                  }}
-                >
-                  {item.airportNameKr} ({item.iataCode})
-                </SuggestionItem>
-              ))}
-            </SuggestionsList>
-          )}
+          <SuggestionsList
+            suggestions={toSuggestions}
+            onSelect={(iataCode) => {
+              setTo(iataCode);
+              setToSuggestions([]);
+            }}
+          />
         </InputWrapper>
 
         <InputWrapper>
