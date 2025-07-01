@@ -1,15 +1,16 @@
 import { useFlightContext } from "../context/FlightContext";
-import { FlightCard } from "../components/FlightCard";
 import { FlightSearchForm } from "../components/FlightSearchForm";
+import { FlightSchedule } from "../components/FlightSchedule";
 import styled from "styled-components";
 
 const PageWrapper = styled.div`
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
 `;
 
-const FlightGrid = styled.div`
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+const ContentWrapper = styled.div`
+  width: 800px;
 `;
 
 export const DashboardPage = () => {
@@ -17,12 +18,10 @@ export const DashboardPage = () => {
 
   return (
     <PageWrapper>
-      <FlightSearchForm />
-      <FlightGrid>
-        {flights.map((flight, index) => (
-          <FlightCard key={index} flight={flight} />
-        ))}
-      </FlightGrid>
+      <ContentWrapper>
+        <FlightSearchForm />
+        <FlightSchedule />
+      </ContentWrapper>
     </PageWrapper>
   );
 };
