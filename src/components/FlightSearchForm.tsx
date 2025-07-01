@@ -1,17 +1,17 @@
-// ✅ src/components/FlightSearchForm.tsx
 import { useState, useRef } from "react";
 import { useFlightContext } from "../context/FlightContext";
 import { fetchFlights } from "../api/flightApi";
-import { fetchAirportSuggestions } from "../api/airportApi";
-import { ArrowLeftRight } from "lucide-react";
+import { fetchAirportSuggestions, type AirportSuggestion } from "../api/airportApi";
+import { ArrowLeftRight, LoaderCircle } from "lucide-react";
 import styled from "styled-components";
 import { SuggestionsList } from "./SuggestionsList";
 import { useClickOutside } from "../hooks/useClickOutside";
 
 const Container = styled.div`
   justify-items: center;
-  display: block;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Form = styled.form`
@@ -25,6 +25,7 @@ const Form = styled.form`
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
   overflow: visible;
+  width: 820px; // ✅ 검색 결과와 길이 통일
 `;
 
 const InputWrapper = styled.div`
@@ -64,7 +65,7 @@ const SwapButton = styled.button`
   width: 40px;
 `;
 
-const SubmitButton = styled.button`
+const SubmitButton = styled.button<{ disabled?: boolean }>`
   height: 53px;
   padding: 0 1.5rem;
   background-color: #00a4dc;
@@ -76,6 +77,9 @@ const SubmitButton = styled.button`
   cursor: pointer;
   transition: background-color 0.2s ease;
   margin-left: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background-color: #008dbd;
@@ -84,41 +88,69 @@ const SubmitButton = styled.button`
   &:active {
     background-color: #007ba8;
   }
+
+  &:disabled {
+    background-color: #aad7e7;
+    cursor: not-allowed;
+  }
+
+  svg {
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 export const FlightSearchForm = () => {
   const [from, setFrom] = useState("ICN");
   const [to, setTo] = useState("BNE");
   const [date, setDate] = useState("2025-06-20");
-  const { setFlights } = useFlightContext();
+
+  const { isLoading, setFlights, setIsLoading } = useFlightContext();
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
 
-  const [fromSuggestions, setFromSuggestions] = useState([]);
-  const [toSuggestions, setToSuggestions] = useState([]);
+  const [fromSuggestions, setFromSuggestions] = useState<AirportSuggestion[]>([]);
+  const [toSuggestions, setToSuggestions] = useState<AirportSuggestion[]>([]);
 
   useClickOutside(fromRef, () => setFromSuggestions([]));
   useClickOutside(toRef, () => setToSuggestions([]));
 
-  const handleSuggestions = async (keyword, target) => {
+  const handleSuggestions = async (keyword: string, target: "from" | "to") => {
     if (!keyword.trim()) return;
     try {
       const data = await fetchAirportSuggestions(keyword);
-      target === "from"
-        ? setFromSuggestions(data)
-        : setToSuggestions(data);
+      target === "from" ? setFromSuggestions(data) : setToSuggestions(data);
     } catch (err) {
       console.error("Failed to fetch suggestions", err);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const getNextDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split("T")[0];
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const startDate = date;
+    const endDate = getNextDate(startDate);
     try {
-      const data = await fetchFlights(from, to, date, date);
+      setIsLoading(true);
+      const data = await fetchFlights(from, to, startDate, endDate);
       setFlights(data);
     } catch (err) {
-      alert("Failed to fetch flights.");
+      alert("항공편 조회에 실패했습니다.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -186,7 +218,9 @@ export const FlightSearchForm = () => {
           />
         </InputWrapper>
 
-        <SubmitButton type="submit">검색하기</SubmitButton>
+        <SubmitButton type="submit" disabled={isLoading}>
+          {isLoading ? <LoaderCircle size={20} /> : "검색"}
+        </SubmitButton>
       </Form>
     </Container>
   );
