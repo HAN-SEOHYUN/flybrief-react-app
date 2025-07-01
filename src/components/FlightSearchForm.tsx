@@ -1,6 +1,5 @@
 // ✅ src/components/FlightSearchForm.tsx
 import { useState, useRef } from "react";
-import { useFlightContext } from "../context/FlightContext";
 import { fetchFlights } from "../api/flightApi";
 import { fetchAirportSuggestions } from "../api/airportApi";
 import { ArrowLeftRight } from "lucide-react";
@@ -86,39 +85,51 @@ const SubmitButton = styled.button`
   }
 `;
 
+type AirportSuggestion = {
+  id: number;
+  iataCode: string;
+  airportNameEn: string;
+  airportNameKr: string;
+};
+
 export const FlightSearchForm = () => {
   const [from, setFrom] = useState("ICN");
   const [to, setTo] = useState("BNE");
   const [date, setDate] = useState("2025-06-20");
-  const { setFlights } = useFlightContext();
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
 
-  const [fromSuggestions, setFromSuggestions] = useState([]);
-  const [toSuggestions, setToSuggestions] = useState([]);
+  const [fromSuggestions, setFromSuggestions] = useState<AirportSuggestion[]>([]);
+  const [toSuggestions, setToSuggestions] = useState<AirportSuggestion[]>([]);
 
   useClickOutside(fromRef, () => setFromSuggestions([]));
   useClickOutside(toRef, () => setToSuggestions([]));
 
-  const handleSuggestions = async (keyword, target) => {
+  const handleSuggestions = async (keyword: string, target: "from" | "to") => {
     if (!keyword.trim()) return;
     try {
       const data = await fetchAirportSuggestions(keyword);
-      target === "from"
-        ? setFromSuggestions(data)
-        : setToSuggestions(data);
+      target === "from" ? setFromSuggestions(data) : setToSuggestions(data);
     } catch (err) {
       console.error("Failed to fetch suggestions", err);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const getNextDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split("T")[0];
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const startDate = date;
+    const endDate = getNextDate(startDate);
     try {
-      const data = await fetchFlights(from, to, date, date);
-      setFlights(data);
+      const data = await fetchFlights(from, to, startDate, endDate);
+      console.log("📦 Flight schedules fetched:", data);
     } catch (err) {
-      alert("Failed to fetch flights.");
+      alert("Failed to fetch flight schedules.");
     }
   };
 
