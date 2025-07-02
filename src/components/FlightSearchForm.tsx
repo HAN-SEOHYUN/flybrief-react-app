@@ -25,12 +25,11 @@ const Form = styled.form`
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   border: 1px solid #ddd;
   overflow: visible;
-  width: 820px; // ✅ 검색 결과와 길이 통일
 `;
 
 const InputWrapper = styled.div`
   position: relative;
-  width: 200px;
+  width: 190px;
   flex-shrink: 0;
 `;
 
