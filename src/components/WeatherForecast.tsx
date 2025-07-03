@@ -1,6 +1,6 @@
-// src/components/WeatherForecast.tsx
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useFlightContext } from "../context/FlightContext";
 import { fetchWeatherForecast } from "../api/weatherApi";
 import { SkeletonWeatherForecast } from "./SkeletonWeatherForecast";
 
@@ -32,11 +32,11 @@ const TitleWrapper = styled.div`
   position: relative;
 `;
 
-const Title = styled.h2<{ visible: boolean }>`
+const Title = styled.h2<{ $visible: boolean }>`
   font-size: 1.4rem;
   font-weight: bold;
   color: #212529;
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
   position: absolute;
   left: 0;
   right: 0;
@@ -44,11 +44,11 @@ const Title = styled.h2<{ visible: boolean }>`
   transition: opacity 0.3s ease;
 `;
 
-const DescriptionText = styled.p<{ visible: boolean }>`
+const DescriptionText = styled.p<{ $visible: boolean }>`
   font-size: 0.9rem;
   color: #212529;
   font-weight: 500;
-  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  opacity: ${({ $visible }) => ($visible ? 1 : 0)};
   position: absolute;
   left: 0;
   right: 0;
@@ -116,15 +116,31 @@ function getWeatherIconClass(icon: string): string {
 }
 
 export const WeatherForecast = () => {
+  const { flights, isLoading: isFlightLoading } = useFlightContext();
   const [weatherData, setWeatherData] = useState<WeatherData[]>([]);
   const [hoveredDesc, setHoveredDesc] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
+  const getEndDate = (start: string): string => {
+    const date = new Date(start);
+    date.setDate(date.getDate() + 6);
+    return date.toISOString().split("T")[0];
+  };
+
   useEffect(() => {
+    const iataCode = flights?.[0]?.arrivalAirportIataCode;
+    const startDate = flights?.[0]?.scheduledDepartureDate;
+
+    if (!iataCode || !startDate) {
+      setIsLoading(false);
+      return;
+    }
+    const endDate = getEndDate(startDate);
+
     const fetchData = async () => {
       try {
-        const data = await fetchWeatherForecast("YVR", "2025-06-26", "2025-07-02");
-        setWeatherData(data);
+        setIsLoading(true);
+        const data = await fetchWeatherForecast(iataCode, startDate, endDate);
         setWeatherData(data);
       } catch (error) {
         console.error("날씨 정보 요청 실패:", error);
@@ -134,15 +150,17 @@ export const WeatherForecast = () => {
     };
 
     fetchData();
-  }, []);
+  }, [flights]);
 
-  if (isLoading) return <SkeletonWeatherForecast />;
+  if (isFlightLoading || isLoading) return <SkeletonWeatherForecast />;
+
+  if (weatherData.length === 0) return null;
 
   return (
     <Wrapper>
       <TitleWrapper>
-        <Title visible={!hoveredDesc}>7-Day Weather Forecast</Title>
-        <DescriptionText visible={!!hoveredDesc}>{hoveredDesc}</DescriptionText>
+        <Title $visible={!hoveredDesc}>7-Day Weather Forecast</Title>
+        <DescriptionText $visible={!!hoveredDesc}>{hoveredDesc}</DescriptionText>
       </TitleWrapper>
 
       <Container>
