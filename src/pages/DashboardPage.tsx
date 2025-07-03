@@ -3,6 +3,7 @@ import { FlightSearchForm } from "../components/FlightSearchForm";
 import { FlightSchedule } from "../components/FlightSchedule";
 import styled from "styled-components";
 import { CountryInfo } from "../components/CountryInfo";
+import { WeatherForecast } from "../components/WeatherForecast";
 
 
 const PageWrapper = styled.div`
@@ -24,6 +25,7 @@ export const DashboardPage = () => {
         <FlightSearchForm />
         <FlightSchedule />
         <CountryInfo/>
+        <WeatherForecast/>
       </ContentWrapper>
     </PageWrapper>
   );
