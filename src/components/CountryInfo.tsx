@@ -8,9 +8,13 @@ import { SkeletonCountryInfo } from "./SkeletonCountryInfo";
 const Wrapper = styled.section`
   margin-top: 2rem;
   padding: 1.5rem;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background-color: #f9f9f9;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #212529;
 `;
 
 const Title = styled.h2`
@@ -18,6 +22,7 @@ const Title = styled.h2`
   font-weight: bold;
   margin-bottom: 1.5rem;
   text-align: center;
+  color: #212529;
 `;
 
 const InfoItem = styled.div`
@@ -34,7 +39,7 @@ const InfoItemRow = styled.div`
 
 const Label = styled.div`
   font-size: 0.85rem;
-  color: #888;
+  color: #495057;
 `;
 
 const WarningTag = styled.div<{ $level: "attention" | "control" | "limita" | "ban" }>`
@@ -67,9 +72,9 @@ const SubTag = styled.div`
   font-size: 0.85rem;
   font-weight: 500;
   border-radius: 9999px;
-  background-color: #f8f9fa;
+  background-color: #fff;
   color: #212529;
-  border: 1px solid #dee2e6;
+  border: 1px solid #ccc;
 `;
 
 const TitleSection = styled.div`
@@ -80,8 +85,8 @@ const TitleSection = styled.div`
 `;
 
 const Flag = styled.img`
-  width: 48px;
-  height: 32px;
+  width: 64px;
+  height: 42px;
   border-radius: 4px;
   object-fit: cover;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
@@ -90,6 +95,7 @@ const Flag = styled.img`
 const Value = styled.div`
   font-size: 1.1rem;
   font-weight: 500;
+  color: #212529;
 `;
 
 export const CountryInfo = () => {
