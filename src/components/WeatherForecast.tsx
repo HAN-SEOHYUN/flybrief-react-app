@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { fetchWeatherForecast } from "../api/weatherApi";
+import { SkeletonWeatherForecast } from "./SkeletonWeatherForecast";
 
 export type WeatherData = {
   dateTime: string;
@@ -117,19 +118,25 @@ function getWeatherIconClass(icon: string): string {
 export const WeatherForecast = () => {
   const [weatherData, setWeatherData] = useState<WeatherData[]>([]);
   const [hoveredDesc, setHoveredDesc] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchWeatherForecast("YVR", "2025-06-26", "2025-07-02");
         setWeatherData(data);
+        setWeatherData(data);
       } catch (error) {
         console.error("날씨 정보 요청 실패:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchData();
   }, []);
+
+  if (isLoading) return <SkeletonWeatherForecast />;
 
   return (
     <Wrapper>
