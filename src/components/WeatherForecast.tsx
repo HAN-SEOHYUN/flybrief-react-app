@@ -9,24 +9,71 @@ export type WeatherData = {
   tempMin: number;
   icon: string;
   humidity: number;
+  description: string;
 };
+
+const Wrapper = styled.section`
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #212529;
+`;
+
+const TitleWrapper = styled.div`
+  height: 1.8rem;
+  text-align: center;
+  margin-bottom: 1.25rem;
+  position: relative;
+`;
+
+const Title = styled.h2<{ visible: boolean }>`
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #212529;
+  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  transition: opacity 0.3s ease;
+`;
+
+const DescriptionText = styled.p<{ visible: boolean }>`
+  font-size: 0.9rem;
+  color: #212529;
+  font-weight: 500;
+  opacity: ${({ visible }) => (visible ? 1 : 0)};
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  transition: opacity 0.3s ease;
+`;
 
 const Container = styled.div`
   display: flex;
   gap: 1rem;
   overflow-x: auto;
-  padding: 1rem;
+  padding: 1rem 0;
 `;
 
 const Card = styled.div`
   flex: 0 0 auto;
-  width: 120px;
-  background: #fff;
+  width: 140px;
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   padding: 1rem;
   text-align: center;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   color: #212529;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: background 0.3s ease;
+  position: relative;
 `;
 
 const WeatherIcon = styled.i`
@@ -41,7 +88,13 @@ const Temp = styled.div`
 
 const Label = styled.div`
   font-size: 0.8rem;
-  color: #666;
+  color: #495057;
+`;
+
+const DateText = styled.div`
+  font-size: 0.75rem;
+  color: #868e96;
+  margin-bottom: 0.25rem;
 `;
 
 function getDayLabel(dateStr: string, index: number) {
@@ -63,6 +116,7 @@ function getWeatherIconClass(icon: string): string {
 
 export const WeatherForecast = () => {
   const [weatherData, setWeatherData] = useState<WeatherData[]>([]);
+  const [hoveredDesc, setHoveredDesc] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,15 +132,29 @@ export const WeatherForecast = () => {
   }, []);
 
   return (
-    <Container>
-      {weatherData.map((day, index) => (
-        <Card key={day.dateTime}>
-          <WeatherIcon className={getWeatherIconClass(day.icon)} />
-          <Label>{getDayLabel(day.dateTime, index)}</Label>
-          <Temp>{day.tempMax}°C / {day.tempMin}°C</Temp>
-          <Label>Humidity: {day.humidity}%</Label>
-        </Card>
-      ))}
-    </Container>
+    <Wrapper>
+      <TitleWrapper>
+        <Title visible={!hoveredDesc}>7-Day Weather Forecast</Title>
+        <DescriptionText visible={!!hoveredDesc}>{hoveredDesc}</DescriptionText>
+      </TitleWrapper>
+
+      <Container>
+        {weatherData.map((day, index) => (
+          <Card
+            key={day.dateTime}
+            onMouseEnter={() => setHoveredDesc(day.description)}
+            onMouseLeave={() => setHoveredDesc("")}
+          >
+            <WeatherIcon className={getWeatherIconClass(day.icon)} />
+            <Label>{getDayLabel(day.dateTime, index)}</Label>
+            <DateText>{day.dateTime}</DateText>
+            <Temp>
+              {day.tempMax}°C / {day.tempMin}°C
+            </Temp>
+            <Label>Humidity: {day.humidity}%</Label>
+          </Card>
+        ))}
+      </Container>
+    </Wrapper>
   );
 };
