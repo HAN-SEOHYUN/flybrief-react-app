@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useFlightContext } from "../context/FlightContext";
 import { fetchCountryInfo } from "../api/countryApi";
 import type { CountryInfo as CountryInfoType } from "../api/countryApi";
+import { SkeletonCountryInfo } from "./SkeletonCountryInfo";
 
 const Wrapper = styled.section`
   margin-top: 2rem;
@@ -36,26 +37,26 @@ const Label = styled.div`
   color: #888;
 `;
 
-const WarningTag = styled.div<{ level: "attention" | "control" | "limita" | "ban" }>`
+const WarningTag = styled.div<{ $level: "attention" | "control" | "limita" | "ban" }>`
   display: inline-block;
   padding: 0.3rem 0.75rem;
   font-size: 0.9rem;
   font-weight: 600;
   border-radius: 9999px;
-  color: ${({ level }) =>
-    level === "ban"
+  color: ${({ $level }) =>
+    $level === "ban"
       ? "#fff"
-      : level === "limita"
+      : $level === "limita"
       ? "#c92a2a"
-      : level === "control"
+      : $level === "control"
       ? "#996c00"
       : "#1864ab"};
-  background-color: ${({ level }) =>
-    level === "ban"
+  background-color: ${({ $level }) =>
+    $level === "ban"
       ? "#212529"
-      : level === "limita"
+      : $level === "limita"
       ? "#ffa8a8"
-      : level === "control"
+      : $level === "control"
       ? "#fff3bf"
       : "#d0ebff"};
 `;
@@ -70,7 +71,6 @@ const SubTag = styled.div`
   color: #212529;
   border: 1px solid #dee2e6;
 `;
-
 
 const TitleSection = styled.div`
   display: flex;
@@ -93,7 +93,7 @@ const Value = styled.div`
 `;
 
 export const CountryInfo = () => {
-  const { flights } = useFlightContext();
+  const { flights, isLoading } = useFlightContext();
   const [countryInfo, setCountryInfo] = useState<CountryInfoType | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -117,11 +117,11 @@ export const CountryInfo = () => {
   }, [flights]);
 
   if (!flights || flights.length === 0) return null;
-  if (!countryInfo) return null;
   if (error) return <Wrapper>{error}</Wrapper>;
+  if (isLoading || !countryInfo) return <SkeletonCountryInfo />;
 
   return (
-     <Wrapper>
+    <Wrapper>
       <TitleSection>
         <Flag
           src={`https://flagcdn.com/w80/${countryInfo.iso2.toLowerCase()}.png`}
@@ -155,7 +155,7 @@ export const CountryInfo = () => {
 
       {(countryInfo.attentionPartial || countryInfo.attentionNote) && (
         <InfoItemRow>
-          <WarningTag level="attention">여행유의</WarningTag>
+          <WarningTag $level="attention">여행유의</WarningTag>
           {countryInfo.attentionPartial && <SubTag>일부</SubTag>}
           {countryInfo.attentionNote && <Value>{countryInfo.attentionNote}</Value>}
         </InfoItemRow>
@@ -163,7 +163,7 @@ export const CountryInfo = () => {
 
       {(countryInfo.controlPartial || countryInfo.controlNote) && (
         <InfoItemRow>
-          <WarningTag level="control">여행자제</WarningTag>
+          <WarningTag $level="control">여행자제</WarningTag>
           {countryInfo.controlPartial && <SubTag>일부</SubTag>}
           {countryInfo.controlNote && <Value>{countryInfo.controlNote}</Value>}
         </InfoItemRow>
@@ -171,7 +171,7 @@ export const CountryInfo = () => {
 
       {(countryInfo.limitaPartial || countryInfo.limitaNote) && (
         <InfoItemRow>
-          <WarningTag level="limita">철수권고</WarningTag>
+          <WarningTag $level="limita">철수권고</WarningTag>
           {countryInfo.limitaPartial && <SubTag>일부</SubTag>}
           {countryInfo.limitaNote && <Value>{countryInfo.limitaNote}</Value>}
         </InfoItemRow>
@@ -179,7 +179,7 @@ export const CountryInfo = () => {
 
       {(countryInfo.banYnPartial || countryInfo.banNote) && (
         <InfoItemRow>
-          <WarningTag level="ban">여행금지</WarningTag>
+          <WarningTag $level="ban">여행금지</WarningTag>
           {countryInfo.banYnPartial && <SubTag>일부</SubTag>}
           {countryInfo.banNote && <Value>{countryInfo.banNote}</Value>}
         </InfoItemRow>
