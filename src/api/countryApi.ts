@@ -43,3 +43,21 @@ export async function fetchCountryInfo(iso3: string): Promise<CountryInfo> {
 
   return result.data as CountryInfo;
 }
+
+export async function fetchCountryAccidentNews(iataCode: string): Promise<string> {
+  const response = await fetch(
+    `http://localhost:8080/api/country/news?iataCode=${encodeURIComponent(iataCode)}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch country accident news");
+  }
+
+  const result = await response.json();
+
+  if (result.status !== "OK") {
+    throw new Error(result.message || "API returned an error");
+  }
+
+  return result.data as string;
+}

@@ -6,6 +6,7 @@ import { CountryInfo } from "../components/CountryInfo";
 import { WeatherForecast } from "../components/WeatherForecast";
 import { WeatherSummary } from "../components/WeatherSummary";
 import { useState } from "react";
+import { CountryAccidentNews } from "../components/CountryAccidentNews";
 
 const PageWrapper = styled.div`
   padding: 2rem;
@@ -29,6 +30,7 @@ export const DashboardPage = () => {
         <CountryInfo/>
         <WeatherForecast/>
         {hasSearched && <WeatherSummary/>}
+        <CountryAccidentNews/>
       </ContentWrapper>
     </PageWrapper>
   );
