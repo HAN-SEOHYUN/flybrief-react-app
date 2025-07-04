@@ -25,7 +25,6 @@ const SummaryButton = styled.button`
   text-shadow: 0 0 0px #fff,0 0 0px #fff;
   cursor: pointer;
   margin: 0 auto;
-  margin-top: 1.5rem;
   outline: none;
   z-index: 1;
   box-shadow: 0 0 4px 1.5px #a084ff, 0 0 8px 2px #5ee6ff;
@@ -59,7 +58,7 @@ const GlitterIcon = styled.span`
 
 // WeatherForecast.tsx 스타일 참고
 const Wrapper = styled.section`
-  margin-top: 2rem;
+  margin-top: 0;
   padding: 1.5rem;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.15);
@@ -71,6 +70,7 @@ const Wrapper = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 400px;
 `;
 
 const Title = styled.h2`
@@ -87,6 +87,9 @@ const SummaryText = styled.div`
   line-height: 1.7;
   white-space: pre-line;
   text-align: center;
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
 `;
 
 function getEndDate(start: string): string {
@@ -115,7 +118,13 @@ export const WeatherSummary = () => {
   // isLoading이 true면 버튼 위치에만 skeleton ui
   if (isLoading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        height: "400px",
+        width: "100%"
+      }}>
         <SkeletonWeatherSummaryButton />
       </div>
     );
@@ -141,7 +150,13 @@ export const WeatherSummary = () => {
   if (!summary && !loading) {
     // summary가 없고 로딩도 아닐 때: 버튼만 중앙에
     return (
-      <div style={{ display: "flex", justifyContent: "center" }}>
+      <div style={{ 
+        display: "flex", 
+        justifyContent: "center", 
+        alignItems: "center", 
+        height: "400px",
+        width: "100%"
+      }}>
         <SummaryButton type="button" onClick={handleClick} disabled={loading}>
           <GlitterIcon>✨</GlitterIcon>날씨정보 AI 요약
         </SummaryButton>

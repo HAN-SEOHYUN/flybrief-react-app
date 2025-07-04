@@ -12,11 +12,12 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  margin-top: 0;
 `;
 
 const Form = styled.form`
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
   background: rgba(255, 255, 255, 0.9);
@@ -27,15 +28,23 @@ const Form = styled.form`
   overflow: visible;
   width: 100%;
   box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const InputWrapper = styled.div`
   position: relative;
-  width: 160px;
-  flex-shrink: 0;
+  min-width: 160px;
   flex: 1;
   overflow: visible;
   z-index: 100;
+  
+  @media (max-width: 768px) {
+    min-width: 100%;
+  }
 `;
 
 const InputLabel = styled.label`

@@ -9,13 +9,67 @@ import { useState } from "react";
 import { CountryAccidentNews } from "../components/CountryAccidentNews";
 
 const PageWrapper = styled.div`
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const ContentWrapper = styled.div`
-  width: 800px;
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto auto auto;
+  gap: 1rem;
+  grid-template-areas:
+    "search search"
+    "schedule country"
+    "weather weather-summary"
+    "news .";
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "search"
+      "schedule"
+      "country"
+      "weather"
+      "weather-summary"
+      "news";
+  }
+`;
+
+const SearchSection = styled.div`
+  grid-area: search;
+  width: 100%;
+`;
+
+const ScheduleSection = styled.div`
+  grid-area: schedule;
+  width: 100%;
+`;
+
+const CountrySection = styled.div`
+  grid-area: country;
+  width: 100%;
+`;
+
+const WeatherSection = styled.div`
+  grid-area: weather;
+  width: 100%;
+`;
+
+const WeatherSummarySection = styled.div`
+  grid-area: weather-summary;
+  width: 100%;
+`;
+
+const NewsSection = styled.div`
+  grid-area: news;
+  width: 100%;
 `;
 
 export const DashboardPage = () => {
@@ -25,12 +79,29 @@ export const DashboardPage = () => {
   return (
     <PageWrapper>
       <ContentWrapper>
-        <FlightSearchForm onSearch={() => setHasSearched(true)} />
-        <FlightSchedule />
-        <CountryInfo/>
-        <WeatherForecast/>
-        {hasSearched && <WeatherSummary/>}
-        <CountryAccidentNews/>
+        <SearchSection>
+          <FlightSearchForm onSearch={() => setHasSearched(true)} />
+        </SearchSection>
+        
+        <ScheduleSection>
+          <FlightSchedule />
+        </ScheduleSection>
+        
+        <CountrySection>
+          <CountryInfo />
+        </CountrySection>
+        
+        <WeatherSection>
+          <WeatherForecast />
+        </WeatherSection>
+        
+        <WeatherSummarySection>
+          {hasSearched && <WeatherSummary />}
+        </WeatherSummarySection>
+        
+        <NewsSection>
+          <CountryAccidentNews />
+        </NewsSection>
       </ContentWrapper>
     </PageWrapper>
   );

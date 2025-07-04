@@ -6,7 +6,7 @@ const shine = keyframes`
 `;
 
 const Wrapper = styled.section`
-  margin-top: 2rem;
+  margin-top: 0;
   padding: 1.5rem;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.15);
@@ -14,6 +14,9 @@ const Wrapper = styled.section`
   -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
+  height: 400px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const TitleSkeleton = styled.div`
@@ -27,25 +30,32 @@ const TitleSkeleton = styled.div`
 `;
 
 const Container = styled.div`
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.75rem;
   padding: 1rem 0;
+  flex: 1;
+  overflow-y: auto;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 0.5rem;
+  }
 `;
 
 const Card = styled.div`
-  flex: 0 0 auto;
-  width: 140px;
-  height: 180px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 12px;
-  padding: 1rem;
+  padding: 0.75rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.3);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 180px;
 `;
 
 const Circle = styled.div`

@@ -6,11 +6,11 @@ const Card = styled.div`
   display: flex;
   align-items: center;
   background: rgba(255, 255, 255, 0.2);
-  padding: 1rem 1.25rem;
+  padding: 1.25rem 1.5rem;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  gap: 1rem;
+  gap: 1.25rem;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition: background 0.3s ease;
@@ -36,7 +36,7 @@ const InfoRow = styled.div`
 const RouteLine = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1.25rem;
   font-size: 1rem;
   font-weight: 500;
   align-items: center;
@@ -45,7 +45,7 @@ const RouteLine = styled.div`
 const MealLine = styled.div`
   font-size: 0.75rem;
   color: #999;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
 `;
 
 export const FlightCard = ({

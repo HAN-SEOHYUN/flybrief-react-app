@@ -6,7 +6,7 @@ import type { CountryInfo as CountryInfoType } from "../api/countryApi";
 import { SkeletonCountryInfo } from "./SkeletonCountryInfo";
 
 const Wrapper = styled.section`
-  margin-top: 2rem;
+  margin-top: 0;
   padding: 1.5rem;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.15);
@@ -15,6 +15,10 @@ const Wrapper = styled.section`
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #212529;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 `;
 
 const Title = styled.h2`

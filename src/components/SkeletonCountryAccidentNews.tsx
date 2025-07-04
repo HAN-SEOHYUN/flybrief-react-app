@@ -6,7 +6,7 @@ const shine = keyframes`
 `;
 
 const Wrapper = styled.section`
-  margin-top: 2rem;
+  margin-top: 0;
   padding: 1.5rem 2rem;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.15);
@@ -20,7 +20,13 @@ const Wrapper = styled.section`
   align-items: flex-start;
   gap: 1.5rem;
   min-height: 180px;
-  max-height: 340px;
+  max-height: 300px;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 const ImgSkeleton = styled.div`

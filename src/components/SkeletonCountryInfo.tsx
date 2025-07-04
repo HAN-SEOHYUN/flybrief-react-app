@@ -6,11 +6,19 @@ const shine = keyframes`
 `;
 
 const SkeletonWrapper = styled.div`
-  margin-top: 2rem;
+  margin-top: 0;
   padding: 1.5rem;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background-color: #f9f9f9;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #212529;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 `;
 
 const SkeletonBox = styled.div`
