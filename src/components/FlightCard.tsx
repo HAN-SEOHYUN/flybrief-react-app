@@ -5,12 +5,19 @@ import { SkeletonFlightCard } from "./SkeletonFlightCard";
 const Card = styled.div`
   display: flex;
   align-items: center;
-  background: white;
+  background: rgba(255, 255, 255, 0.2);
   padding: 1rem 1.25rem;
-  border-radius: 0.75rem;
-  border: 1px solid #e0e0e0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   gap: 1rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.3s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
 `;
 
 const LogoWrapper = styled.div`

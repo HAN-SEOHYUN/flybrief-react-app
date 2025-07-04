@@ -3,11 +3,18 @@ import styled from "styled-components";
 import { FlightCard } from "./FlightCard";
 import { SkeletonFlightCard } from "./SkeletonFlightCard";
 
-const Wrapper = styled.div`
-  margin-top: 1rem;
-  max-width: 840px;
-  margin-left: auto;
-  margin-right: auto;
+const Wrapper = styled.section`
+  margin-top: 2rem;
+  padding: 1.5rem 2rem;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #212529;
+  position: relative;
+  z-index: 1;
 `;
 
 const ListContainer = styled.div`
