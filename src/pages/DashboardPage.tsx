@@ -4,7 +4,8 @@ import { FlightSchedule } from "../components/FlightSchedule";
 import styled from "styled-components";
 import { CountryInfo } from "../components/CountryInfo";
 import { WeatherForecast } from "../components/WeatherForecast";
-
+import { WeatherSummary } from "../components/WeatherSummary";
+import { useState } from "react";
 
 const PageWrapper = styled.div`
   padding: 2rem;
@@ -18,14 +19,16 @@ const ContentWrapper = styled.div`
 
 export const DashboardPage = () => {
   const { flights } = useFlightContext();
+  const [hasSearched, setHasSearched] = useState(false);
 
   return (
     <PageWrapper>
       <ContentWrapper>
-        <FlightSearchForm />
+        <FlightSearchForm onSearch={() => setHasSearched(true)} />
         <FlightSchedule />
         <CountryInfo/>
         <WeatherForecast/>
+        {hasSearched && <WeatherSummary/>}
       </ContentWrapper>
     </PageWrapper>
   );

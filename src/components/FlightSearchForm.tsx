@@ -107,7 +107,12 @@ const SubmitButton = styled.button<{ disabled?: boolean }>`
   }
 `;
 
-export const FlightSearchForm = () => {
+// props 타입 추가
+interface FlightSearchFormProps {
+  onSearch?: () => void;
+}
+
+export const FlightSearchForm = ({ onSearch }: FlightSearchFormProps) => {
   const [from, setFrom] = useState("ICN");
   const [to, setTo] = useState("BNE");
   const [date, setDate] = useState("2025-06-20");
@@ -146,6 +151,7 @@ export const FlightSearchForm = () => {
       setIsLoading(true);
       const data = await fetchFlights(from, to, startDate, endDate);
       setFlights(data);
+      if (onSearch) onSearch();
     } catch (err) {
       alert("항공편 조회에 실패했습니다.");
     } finally {
