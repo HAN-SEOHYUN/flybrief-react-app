@@ -11,6 +11,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 `;
 
 const Form = styled.form`
@@ -19,17 +20,20 @@ const Form = styled.form`
   align-items: center;
   gap: 1rem;
   background: rgba(255, 255, 255, 0.9);
-  padding: 1.5rem 2rem;
+  padding: 1.2rem 1.2rem;
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.5);
   overflow: visible;
+  width: 100%;
+  box-sizing: border-box;
 `;
 
 const InputWrapper = styled.div`
   position: relative;
-  width: 190px;
+  width: 160px;
   flex-shrink: 0;
+  flex: 1;
   overflow: visible;
   z-index: 100;
 `;
@@ -46,10 +50,10 @@ const InputLabel = styled.label`
 
 const Input = styled.input`
   width: 100%;
-  padding: 1.5rem 0.5rem 0.5rem 0.5rem;
+  padding: 1.1rem 0.5rem 0.5rem 0.5rem;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 0.97rem;
   background: rgba(255, 255, 255, 0.95);
   color: #212529;
   transition: all 0.3s ease;
@@ -69,15 +73,15 @@ const Input = styled.input`
 const SwapButton = styled.button`
   background: rgba(255, 255, 255, 0.9);
   border-radius: 9999px;
-  padding: 0.5rem;
+  padding: 0.3rem;
   border: 1px solid rgba(255, 255, 255, 0.5);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  height: 40px;
-  width: 40px;
+  height: 36px;
+  width: 36px;
   transition: all 0.3s ease;
   
   &:hover {
@@ -92,20 +96,23 @@ const SwapButton = styled.button`
 `;
 
 const SubmitButton = styled.button<{ disabled?: boolean }>`
-  height: 53px;
-  padding: 0 1.5rem;
+  height: 42px;
+  padding: 0 1.2rem;
   background: linear-gradient(135deg, #00a4dc 0%, #008dbd 100%);
   color: white;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.97rem;
   border: none;
   border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-left: 8px;
+  margin-left: 4px;
+  flex-shrink: 0;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
   box-shadow: 0 4px 12px rgba(0, 164, 220, 0.3);
 
   &:hover {
