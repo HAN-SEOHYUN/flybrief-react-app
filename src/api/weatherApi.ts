@@ -32,3 +32,22 @@ export async function fetchWeatherForecast(iataCode: string, startDate: string, 
 
   return result.data as WeatherForecast[];
 }
+
+export async function fetchWeatherSummary(iataCode: string, startDate: string, endDate: string): Promise<string> {
+  const response = await fetch(
+    `http://localhost:8080/api/weather/summary?iataCode=${encodeURIComponent(iataCode)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch weather summary");
+  }
+
+  const result = await response.json();
+
+  if (result.status !== "OK") {
+    throw new Error(result.message || "API returned an error");
+  }
+
+  return result.data as string;
+}
+
