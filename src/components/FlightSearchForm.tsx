@@ -28,6 +28,7 @@ const Form = styled.form`
   overflow: visible;
   width: 100%;
   box-sizing: border-box;
+  margin-top: 40px;
   
   @media (max-width: 768px) {
     flex-direction: column;
@@ -163,10 +164,9 @@ interface FlightSearchFormProps {
 
 export const FlightSearchForm = ({ onSearch }: FlightSearchFormProps) => {
   const [from, setFrom] = useState("ICN");
-  const [to, setTo] = useState("BNE");
   const [date, setDate] = useState("2025-06-20");
 
-  const { isLoading, setFlights, setIsLoading } = useFlightContext();
+  const { isLoading, setFlights, setIsLoading, to, setTo } = useFlightContext();
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
 

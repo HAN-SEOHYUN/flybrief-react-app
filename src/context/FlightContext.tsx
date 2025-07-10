@@ -6,6 +6,8 @@ interface FlightContextType {
   setFlights: React.Dispatch<React.SetStateAction<Flight[]>>;
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  to: string;
+  setTo: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const FlightContext = createContext<FlightContextType | undefined>(undefined);
@@ -13,9 +15,10 @@ const FlightContext = createContext<FlightContextType | undefined>(undefined);
 export const FlightProvider = ({ children }: { children: React.ReactNode }) => {
   const [flights, setFlights] = useState<Flight[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [to, setTo] = useState<string>("BNE");
 
   return (
-    <FlightContext.Provider value={{ flights, setFlights, isLoading, setIsLoading }}>
+    <FlightContext.Provider value={{ flights, setFlights, isLoading, setIsLoading, to, setTo }}>
       {children}
     </FlightContext.Provider>
   );

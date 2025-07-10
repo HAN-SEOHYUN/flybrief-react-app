@@ -8,6 +8,7 @@ import { WeatherSummary } from "../components/WeatherSummary";
 import { useState } from "react";
 import { CountryAccidentNews } from "../components/CountryAccidentNews";
 import { Header } from "../components/Header";
+import { TravelRecommendation } from "../components/TravelRecommendation";
 
 const PageWrapper = styled.div`
   padding: 1rem;
@@ -85,6 +86,7 @@ export const DashboardPage = () => {
         <ContentWrapper>
           <SearchSection>
             <FlightSearchForm onSearch={() => setHasSearched(true)} />
+            <TravelRecommendation />
           </SearchSection>
           
           <ScheduleSection>
