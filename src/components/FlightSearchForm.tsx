@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useFlightContext } from "../context/FlightContext";
 import { fetchFlights } from "../api/flightApi";
 import { fetchAirportSuggestions, type AirportSuggestion } from "../api/airportApi";
 import { ArrowLeftRight, LoaderCircle } from "lucide-react";
 import styled from "styled-components";
 import { SuggestionsList } from "./SuggestionsList";
+import { useClickOutside } from "../hooks/useClickOutside";
 
 const Container = styled.div`
   justify-items: center;
@@ -179,6 +180,38 @@ export const FlightSearchForm = ({ onSearch }: FlightSearchFormProps) => {
 
   const [fromSuggestions, setFromSuggestions] = useState<AirportSuggestion[]>([]);
   const [toSuggestions, setToSuggestions] = useState<AirportSuggestion[]>([]);
+
+  // SuggestionsList가 표시될 때 전체 화면 클릭 감지
+  useEffect(() => {
+    const handleDocumentClick = (event: MouseEvent) => {
+      const target = event.target as Element;
+      
+      // 출발지나 도착지 InputWrapper 내부 클릭이 아닌 경우
+      if (!fromRef.current?.contains(target) && !toRef.current?.contains(target)) {
+        setFromSuggestions([]);
+        setToSuggestions([]);
+      }
+    };
+
+    // suggestions가 있을 때만 이벤트 리스너 추가
+    if (fromSuggestions.length > 0 || toSuggestions.length > 0) {
+      document.addEventListener('mousedown', handleDocumentClick);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleDocumentClick);
+    };
+  }, [fromSuggestions.length, toSuggestions.length]);
+
+  // 출발지 InputWrapper 외부 클릭 시 suggestions 숨기기
+  useClickOutside(fromRef, () => {
+    setFromSuggestions([]);
+  });
+
+  // 도착지 InputWrapper 외부 클릭 시 suggestions 숨기기
+  useClickOutside(toRef, () => {
+    setToSuggestions([]);
+  });
 
   const handleSuggestions = async (keyword: string, target: "from" | "to") => {
     if (!keyword.trim()) return;
