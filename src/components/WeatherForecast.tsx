@@ -162,7 +162,9 @@ export const WeatherForecast = () => {
     fetchData();
   }, [flights]);
 
-  if (isFlightLoading || isLoading) return <SkeletonWeatherForecast />;
+  if (isFlightLoading) return <SkeletonWeatherForecast />;
+  if (!flights || flights.length === 0) return null;
+  if (isLoading) return <SkeletonWeatherForecast />;
 
   if (weatherData.length === 0) return null;
 

@@ -96,8 +96,9 @@ export const CountryAccidentNews = () => {
       .finally(() => setLoading(false));
   }, [iataCode]);
 
+  if (isFlightLoading) return <SkeletonCountryAccidentNews />;
   if (!flights || flights.length === 0) return null;
-  if (isFlightLoading || loading) return <SkeletonCountryAccidentNews />;
+  if (loading) return <SkeletonCountryAccidentNews />;
 
   return (
     <Wrapper>

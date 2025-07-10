@@ -128,7 +128,8 @@ export const CountryInfo = () => {
 
   if (!flights || flights.length === 0) return null;
   if (error) return <Wrapper>{error}</Wrapper>;
-  if (isLoading || !countryInfo) return <SkeletonCountryInfo />;
+  if (isLoading) return <SkeletonCountryInfo />;
+  if (!countryInfo) return <SkeletonCountryInfo />;
 
   return (
     <Wrapper>

@@ -7,9 +7,11 @@ import { WeatherForecast } from "../components/WeatherForecast";
 import { WeatherSummary } from "../components/WeatherSummary";
 import { useState } from "react";
 import { CountryAccidentNews } from "../components/CountryAccidentNews";
+import { Header } from "../components/Header";
 
 const PageWrapper = styled.div`
   padding: 1rem;
+  padding-top: 5rem;
   display: flex;
   justify-content: center;
   min-height: 100vh;
@@ -77,32 +79,35 @@ export const DashboardPage = () => {
   const [hasSearched, setHasSearched] = useState(false);
 
   return (
-    <PageWrapper>
-      <ContentWrapper>
-        <SearchSection>
-          <FlightSearchForm onSearch={() => setHasSearched(true)} />
-        </SearchSection>
-        
-        <ScheduleSection>
-          <FlightSchedule />
-        </ScheduleSection>
-        
-        <CountrySection>
-          <CountryInfo />
-        </CountrySection>
-        
-        <WeatherSection>
-          <WeatherForecast />
-        </WeatherSection>
-        
-        <WeatherSummarySection>
-          {hasSearched && <WeatherSummary />}
-        </WeatherSummarySection>
-        
-        <NewsSection>
-          <CountryAccidentNews />
-        </NewsSection>
-      </ContentWrapper>
-    </PageWrapper>
+    <>
+      <Header />
+      <PageWrapper>
+        <ContentWrapper>
+          <SearchSection>
+            <FlightSearchForm onSearch={() => setHasSearched(true)} />
+          </SearchSection>
+          
+          <ScheduleSection>
+            <FlightSchedule />
+          </ScheduleSection>
+          
+          <CountrySection>
+            <CountryInfo />
+          </CountrySection>
+          
+          <WeatherSection>
+            <WeatherForecast />
+          </WeatherSection>
+          
+          <WeatherSummarySection>
+            {hasSearched && <WeatherSummary />}
+          </WeatherSummarySection>
+          
+          <NewsSection>
+            <CountryAccidentNews />
+          </NewsSection>
+        </ContentWrapper>
+      </PageWrapper>
+    </>
   );
 };

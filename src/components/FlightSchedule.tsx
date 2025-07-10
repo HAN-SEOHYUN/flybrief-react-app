@@ -55,6 +55,8 @@ const ListContainer = styled.div`
 export const FlightSchedule = () => {
   const { flights, isLoading } = useFlightContext();
 
+  if (!flights || flights.length === 0) return null;
+
   return (
     <Wrapper>
       {isLoading ? <TitleSkeleton /> : <Title>✈️ 항공편 여정</Title>}
