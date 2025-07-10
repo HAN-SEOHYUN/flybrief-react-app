@@ -68,7 +68,9 @@ export const FlightSchedule = () => {
     );
   }
 
-  if (!flights || flights.length === 0) return null;
+  if (!flights || flights.length === 0) {
+    return null;
+  }
 
   return (
     <Wrapper>

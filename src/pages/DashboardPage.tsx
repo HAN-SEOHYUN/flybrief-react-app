@@ -9,6 +9,7 @@ import { useState } from "react";
 import { CountryAccidentNews } from "../components/CountryAccidentNews";
 import { Header } from "../components/Header";
 import { TravelRecommendation } from "../components/TravelRecommendation";
+import { NoSearchResults } from "../components/NoSearchResults";
 
 const PageWrapper = styled.div`
   padding: 1rem;
@@ -25,10 +26,11 @@ const ContentWrapper = styled.div`
   max-width: 1200px;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto auto auto auto;
+  grid-template-rows: auto auto auto auto auto;
   gap: 1rem;
   grid-template-areas:
     "search search"
+    "no-results no-results"
     "schedule country"
     "weather weather-summary"
     "news .";
@@ -37,6 +39,7 @@ const ContentWrapper = styled.div`
     grid-template-columns: 1fr;
     grid-template-areas:
       "search"
+      "no-results"
       "schedule"
       "country"
       "weather"
@@ -47,6 +50,11 @@ const ContentWrapper = styled.div`
 
 const SearchSection = styled.div`
   grid-area: search;
+  width: 100%;
+`;
+
+const NoResultsSection = styled.div`
+  grid-area: no-results;
   width: 100%;
 `;
 
@@ -79,6 +87,9 @@ export const DashboardPage = () => {
   const { flights, isSearched, isLoading } = useFlightContext();
   const [hasSearched, setHasSearched] = useState(false);
 
+  // 검색 결과가 없을 때만 NoSearchResults 표시
+  const showNoResults = isSearched && !isLoading && (!flights || flights.length === 0);
+
   return (
     <>
       <Header />
@@ -88,6 +99,12 @@ export const DashboardPage = () => {
             <FlightSearchForm onSearch={() => setHasSearched(true)} />
             {!isSearched && <TravelRecommendation />}
           </SearchSection>
+          
+          {showNoResults && (
+            <NoResultsSection>
+              <NoSearchResults />
+            </NoResultsSection>
+          )}
           
           <ScheduleSection>
             <FlightSchedule />
