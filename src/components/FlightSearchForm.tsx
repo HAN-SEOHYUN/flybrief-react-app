@@ -5,32 +5,46 @@ import { fetchAirportSuggestions, type AirportSuggestion } from "../api/airportA
 import { ArrowLeftRight, LoaderCircle } from "lucide-react";
 import styled from "styled-components";
 import { SuggestionsList } from "./SuggestionsList";
-import { useClickOutside } from "../hooks/useClickOutside";
 
 const Container = styled.div`
   justify-items: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  margin-top: 0;
 `;
 
 const Form = styled.form`
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
   gap: 1rem;
-  background: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  border: 1px solid #ddd;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1.2rem 1.2rem;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   overflow: visible;
+  width: 100%;
+  box-sizing: border-box;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
 `;
 
 const InputWrapper = styled.div`
   position: relative;
-  width: 190px;
-  flex-shrink: 0;
+  min-width: 160px;
+  flex: 1;
+  overflow: visible;
+  z-index: 100;
+  
+  @media (max-width: 768px) {
+    min-width: 100%;
+  }
 `;
 
 const InputLabel = styled.label`
@@ -38,59 +52,94 @@ const InputLabel = styled.label`
   top: 6px;
   left: 10px;
   font-size: 0.75rem;
-  color: #6c757d;
+  color: #495057;
   pointer-events: none;
+  font-weight: 500;
 `;
 
 const Input = styled.input`
   width: 100%;
-  padding: 1.5rem 0.5rem 0.5rem 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-  font-size: 1rem;
+  padding: 1.1rem 0.5rem 0.5rem 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  font-size: 0.97rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: #212529;
+  transition: all 0.3s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: #00a4dc;
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 0 0 3px rgba(0, 164, 220, 0.1);
+  }
+  
+  &::placeholder {
+    color: #6c757d;
+  }
 `;
 
 const SwapButton = styled.button`
-  background: #eee;
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 9999px;
-  padding: 0.5rem;
-  border: none;
+  padding: 0.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  height: 40px;
-  width: 40px;
+  height: 36px;
+  width: 36px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: rgba(255, 255, 255, 1);
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:active {
+    transform: scale(0.95);
+  }
 `;
 
 const SubmitButton = styled.button<{ disabled?: boolean }>`
-  height: 53px;
-  padding: 0 1.5rem;
-  background-color: #00a4dc;
+  height: 42px;
+  padding: 0 1.2rem;
+  background: linear-gradient(135deg, #00a4dc 0%, #008dbd 100%);
   color: white;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: 0.97rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
-  margin-left: 8px;
+  transition: all 0.3s ease;
+  margin-left: 4px;
+  flex-shrink: 0;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 164, 220, 0.3);
 
   &:hover {
-    background-color: #008dbd;
+    background: linear-gradient(135deg, #008dbd 0%, #007ba8 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 164, 220, 0.4);
   }
 
   &:active {
-    background-color: #007ba8;
+    background: linear-gradient(135deg, #007ba8 0%, #006b94 100%);
+    transform: translateY(0);
   }
 
   &:disabled {
-    background-color: #aad7e7;
+    background: linear-gradient(135deg, #aad7e7 0%, #99c7d7 100%);
     cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   svg {
@@ -123,9 +172,6 @@ export const FlightSearchForm = ({ onSearch }: FlightSearchFormProps) => {
 
   const [fromSuggestions, setFromSuggestions] = useState<AirportSuggestion[]>([]);
   const [toSuggestions, setToSuggestions] = useState<AirportSuggestion[]>([]);
-
-  useClickOutside(fromRef, () => setFromSuggestions([]));
-  useClickOutside(toRef, () => setToSuggestions([]));
 
   const handleSuggestions = async (keyword: string, target: "from" | "to") => {
     if (!keyword.trim()) return;

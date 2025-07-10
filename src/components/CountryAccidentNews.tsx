@@ -5,7 +5,7 @@ import { fetchCountryAccidentNews } from "../api/countryApi";
 import { SkeletonCountryAccidentNews } from "./SkeletonCountryAccidentNews";
 
 const Wrapper = styled.section`
-  margin-top: 2rem;
+  margin-top: 0;
   padding: 1.5rem 2rem;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.15);
@@ -20,7 +20,13 @@ const Wrapper = styled.section`
   gap: 1.5rem;
   position: relative;
   min-height: 180px;
-  max-height: 340px;
+  max-height: 300px;
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 const MinistryImg = styled.img`
@@ -90,8 +96,9 @@ export const CountryAccidentNews = () => {
       .finally(() => setLoading(false));
   }, [iataCode]);
 
+  if (isFlightLoading) return <SkeletonCountryAccidentNews />;
   if (!flights || flights.length === 0) return null;
-  if (isFlightLoading || loading) return <SkeletonCountryAccidentNews />;
+  if (loading) return <SkeletonCountryAccidentNews />;
 
   return (
     <Wrapper>

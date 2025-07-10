@@ -18,21 +18,35 @@ const List = styled.ul`
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
-  border: 1px solid #ccc;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   max-height: 200px;
   overflow-y: auto;
   z-index: 10;
   list-style: none;
   margin: 0;
   padding: 0;
+  box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
 `;
 
 const Item = styled.li`
-  padding: 0.5rem;
+  padding: 0.75rem 1rem;
   cursor: pointer;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  
+  &:last-child {
+    border-bottom: none;
+  }
+  
   &:hover {
-    background: #f0f0f0;
+    background: rgba(0, 164, 220, 0.1);
+    color: #00a4dc;
+  }
+  
+  &:active {
+    background: rgba(0, 164, 220, 0.2);
   }
 `;
 

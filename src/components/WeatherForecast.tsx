@@ -14,7 +14,7 @@ export type WeatherData = {
 };
 
 const Wrapper = styled.section`
-  margin-top: 2rem;
+  margin-top: 0;
   padding: 1.5rem;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.15);
@@ -23,6 +23,9 @@ const Wrapper = styled.section`
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.3);
   color: #212529;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
 `;
 
 const TitleWrapper = styled.div`
@@ -57,24 +60,31 @@ const DescriptionText = styled.p<{ $visible: boolean }>`
 `;
 
 const Container = styled.div`
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  gap: 0.75rem;
   padding: 1rem 0;
+  flex: 1;
+  overflow-y: auto;
+  
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 0.5rem;
+  }
 `;
 
 const Card = styled.div`
-  flex: 0 0 auto;
-  width: 140px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 12px;
-  padding: 1rem;
+  padding: 20px 0 20px 0;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   color: #212529;
   border: 1px solid rgba(255, 255, 255, 0.3);
   transition: background 0.3s ease;
   position: relative;
+  width: 100%;
+  min-width: 0;
 `;
 
 const WeatherIcon = styled.i`
@@ -106,7 +116,8 @@ function getDayLabel(dateStr: string, index: number) {
 
 function getWeatherIconClass(icon: string): string {
   const iconMap: Record<string, string> = {
-    rain: "wi wi-rain",
+    "rain": "wi wi-rain",
+    "cloudy": "wi wi-cloud",
     "partly-cloudy-day": "wi wi-day-cloudy",
     "clear-day": "wi wi-day-sunny",
     "day-cloudy": "wi wi-day-cloudy",
@@ -152,7 +163,9 @@ export const WeatherForecast = () => {
     fetchData();
   }, [flights]);
 
-  if (isFlightLoading || isLoading) return <SkeletonWeatherForecast />;
+  if (isFlightLoading) return <SkeletonWeatherForecast />;
+  if (!flights || flights.length === 0) return null;
+  if (isLoading) return <SkeletonWeatherForecast />;
 
   if (weatherData.length === 0) return null;
 
