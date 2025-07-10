@@ -74,7 +74,7 @@ export const Header = () => {
       </LogoSection>
       
       <GithubLink 
-        href="https://github.com" 
+        href="https://github.com/HAN-SEOHYUN" 
         target="_blank" 
         rel="noopener noreferrer"
         title="GitHub"
