@@ -25,17 +25,11 @@ const LogoSection = styled.div`
   gap: 0.75rem;
 `;
 
-const Logo = styled.div`
+const Logo = styled.img`
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, #00a4dc 0%, #008dbd 100%);
   border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 1.2rem;
+  object-fit: contain;
 `;
 
 const ServiceName = styled.h1`
@@ -65,7 +59,7 @@ export const Header = () => {
   return (
     <HeaderWrapper>
       <LogoSection>
-        <Logo>✈️</Logo>
+        <Logo src="/logo.png" alt="FlyBrief Logo" />
         <ServiceName>FlyBrief</ServiceName>
       </LogoSection>
       
