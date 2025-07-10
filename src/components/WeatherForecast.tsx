@@ -164,8 +164,8 @@ export const WeatherForecast = () => {
   }, [flights]);
 
   if (isFlightLoading) return <SkeletonWeatherForecast />;
-  if (!flights || flights.length === 0) return null;
   if (isLoading) return <SkeletonWeatherForecast />;
+  if (!flights || flights.length === 0) return null;
 
   if (weatherData.length === 0) return null;
 

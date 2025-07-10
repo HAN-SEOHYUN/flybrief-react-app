@@ -55,19 +55,28 @@ const ListContainer = styled.div`
 export const FlightSchedule = () => {
   const { flights, isLoading } = useFlightContext();
 
+  if (isLoading) {
+    return (
+      <Wrapper>
+        <TitleSkeleton />
+        <ListContainer>
+          {Array.from({ length: 4 }).map((_, idx) => (
+            <SkeletonFlightCard key={idx} />
+          ))}
+        </ListContainer>
+      </Wrapper>
+    );
+  }
+
   if (!flights || flights.length === 0) return null;
 
   return (
     <Wrapper>
-      {isLoading ? <TitleSkeleton /> : <Title>✈️ 항공편 여정</Title>}
+      <Title>✈️ 항공편 여정</Title>
       <ListContainer>
-        {isLoading
-          ? Array.from({ length: 4 }).map((_, idx) => (
-              <SkeletonFlightCard key={idx} />
-            ))
-          : flights.map((flight, idx) => (
-              <FlightCard key={idx} flight={flight} />
-            ))}
+        {flights.map((flight, idx) => (
+          <FlightCard key={idx} flight={flight} />
+        ))}
       </ListContainer>
     </Wrapper>
   );

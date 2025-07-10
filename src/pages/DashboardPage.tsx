@@ -76,7 +76,7 @@ const NewsSection = styled.div`
 `;
 
 export const DashboardPage = () => {
-  const { flights, isSearched } = useFlightContext();
+  const { flights, isSearched, isLoading } = useFlightContext();
   const [hasSearched, setHasSearched] = useState(false);
 
   return (
@@ -102,7 +102,7 @@ export const DashboardPage = () => {
           </WeatherSection>
           
           <WeatherSummarySection>
-            {hasSearched && <WeatherSummary />}
+            <WeatherSummary />
           </WeatherSummarySection>
           
           <NewsSection>
