@@ -35,8 +35,8 @@ const Logo = styled.img`
 const ServiceName = styled.h1`
   font-size: 1.5rem;
   font-weight: 700;
-  color: #212529;
   margin: 0;
+  color: #212529;
 `;
 
 const GithubLink = styled.a`
