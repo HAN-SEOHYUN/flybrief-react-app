@@ -116,7 +116,8 @@ function getDayLabel(dateStr: string, index: number) {
 
 function getWeatherIconClass(icon: string): string {
   const iconMap: Record<string, string> = {
-    rain: "wi wi-rain",
+    "rain": "wi wi-rain",
+    "cloudy": "wi wi-cloud",
     "partly-cloudy-day": "wi wi-day-cloudy",
     "clear-day": "wi wi-day-sunny",
     "day-cloudy": "wi wi-day-cloudy",
