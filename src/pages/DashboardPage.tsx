@@ -76,7 +76,7 @@ const NewsSection = styled.div`
 `;
 
 export const DashboardPage = () => {
-  const { flights } = useFlightContext();
+  const { flights, isSearched } = useFlightContext();
   const [hasSearched, setHasSearched] = useState(false);
 
   return (
@@ -86,7 +86,7 @@ export const DashboardPage = () => {
         <ContentWrapper>
           <SearchSection>
             <FlightSearchForm onSearch={() => setHasSearched(true)} />
-            <TravelRecommendation />
+            {!isSearched && <TravelRecommendation />}
           </SearchSection>
           
           <ScheduleSection>

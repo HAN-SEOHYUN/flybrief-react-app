@@ -164,9 +164,16 @@ interface FlightSearchFormProps {
 
 export const FlightSearchForm = ({ onSearch }: FlightSearchFormProps) => {
   const [from, setFrom] = useState("ICN");
-  const [date, setDate] = useState("2025-06-20");
+  
+  // 오늘 날짜를 YYYY-MM-DD 형식으로 가져오는 함수
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  };
+  
+  const [date, setDate] = useState(getTodayDate());
 
-  const { isLoading, setFlights, setIsLoading, to, setTo } = useFlightContext();
+  const { isLoading, setFlights, setIsLoading, to, setTo, setIsSearched } = useFlightContext();
   const fromRef = useRef<HTMLDivElement>(null);
   const toRef = useRef<HTMLDivElement>(null);
 
@@ -193,6 +200,10 @@ export const FlightSearchForm = ({ onSearch }: FlightSearchFormProps) => {
     e.preventDefault();
     const startDate = date;
     const endDate = getNextDate(startDate);
+    
+    // 검색 시작과 동시에 TravelRecommendation 숨기기
+    setIsSearched(true);
+    
     try {
       setIsLoading(true);
       const data = await fetchFlights(from, to, startDate, endDate);
