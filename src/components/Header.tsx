@@ -23,6 +23,12 @@ const LogoSection = styled.div`
   display: flex;
   align-items: center;
   gap: 0.75rem;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const Logo = styled.img`
@@ -56,9 +62,13 @@ const GithubLink = styled.a`
 `;
 
 export const Header = () => {
+  const handleLogoClick = () => {
+    window.location.reload();
+  };
+
   return (
     <HeaderWrapper>
-      <LogoSection>
+      <LogoSection onClick={handleLogoClick}>
         <Logo src="/logo.png" alt="FlyBrief Logo" />
         <ServiceName>FlyBrief</ServiceName>
       </LogoSection>

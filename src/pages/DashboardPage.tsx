@@ -8,6 +8,7 @@ import { WeatherSummary } from "../components/WeatherSummary";
 import { useState } from "react";
 import { CountryAccidentNews } from "../components/CountryAccidentNews";
 import { Header } from "../components/Header";
+import { TravelRecommendation } from "../components/TravelRecommendation";
 
 const PageWrapper = styled.div`
   padding: 1rem;
@@ -75,7 +76,7 @@ const NewsSection = styled.div`
 `;
 
 export const DashboardPage = () => {
-  const { flights } = useFlightContext();
+  const { flights, isSearched, isLoading } = useFlightContext();
   const [hasSearched, setHasSearched] = useState(false);
 
   return (
@@ -85,6 +86,7 @@ export const DashboardPage = () => {
         <ContentWrapper>
           <SearchSection>
             <FlightSearchForm onSearch={() => setHasSearched(true)} />
+            {!isSearched && <TravelRecommendation />}
           </SearchSection>
           
           <ScheduleSection>
@@ -100,7 +102,7 @@ export const DashboardPage = () => {
           </WeatherSection>
           
           <WeatherSummarySection>
-            {hasSearched && <WeatherSummary />}
+            <WeatherSummary />
           </WeatherSummarySection>
           
           <NewsSection>

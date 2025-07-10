@@ -113,8 +113,6 @@ export const WeatherSummary = () => {
     prevKey.current = key;
   }, [key]);
 
-  if (!flights || flights.length === 0) return null;
-
   // isLoading이 true면 버튼 위치에만 skeleton ui
   if (isLoading) {
     return (
@@ -129,6 +127,8 @@ export const WeatherSummary = () => {
       </div>
     );
   }
+
+  if (!flights || flights.length === 0) return null;
 
   const handleClick = async () => {
     if (!flights[0]?.arrivalAirportIataCode || !flights[0]?.scheduledDepartureDate) return;

@@ -126,9 +126,9 @@ export const CountryInfo = () => {
       });
   }, [flights]);
 
+  if (isLoading) return <SkeletonCountryInfo />;
   if (!flights || flights.length === 0) return null;
   if (error) return <Wrapper>{error}</Wrapper>;
-  if (isLoading) return <SkeletonCountryInfo />;
   if (!countryInfo) return <SkeletonCountryInfo />;
 
   return (
