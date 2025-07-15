@@ -73,14 +73,6 @@ const Wrapper = styled.section`
   height: 400px;
 `;
 
-const Title = styled.h2`
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #212529;
-  text-align: center;
-  margin-bottom: 1.25rem;
-`;
-
 const SummaryText = styled.div`
   font-size: 1.08rem;
   color: #222;

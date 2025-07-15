@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { CountryInfo } from "../components/CountryInfo";
 import { WeatherForecast } from "../components/WeatherForecast";
 import { WeatherSummary } from "../components/WeatherSummary";
-import { useState } from "react";
 import { CountryAccidentNews } from "../components/CountryAccidentNews";
 import { Header } from "../components/Header";
 import { TravelRecommendation } from "../components/TravelRecommendation";
@@ -85,7 +84,6 @@ const NewsSection = styled.div`
 
 export const DashboardPage = () => {
   const { flights, isSearched, isLoading } = useFlightContext();
-  const [hasSearched, setHasSearched] = useState(false);
 
   // 검색 결과가 없을 때만 NoSearchResults 표시
   const showNoResults = isSearched && !isLoading && (!flights || flights.length === 0);
@@ -96,7 +94,7 @@ export const DashboardPage = () => {
       <PageWrapper>
         <ContentWrapper>
           <SearchSection>
-            <FlightSearchForm onSearch={() => setHasSearched(true)} />
+            <FlightSearchForm />
             {!isSearched && <TravelRecommendation />}
           </SearchSection>
           

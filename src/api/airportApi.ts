@@ -6,7 +6,7 @@ export type AirportSuggestion = {
 };
 
 export async function fetchAirportSuggestions(keyword: string): Promise<AirportSuggestion[]> {
-  const response = await fetch(`http://localhost:8080/api/airports/search?keyword=${encodeURIComponent(keyword)}`);
+  const response = await fetch(`http://98.83.105.239:8080/api/airports/search?keyword=${encodeURIComponent(keyword)}`);
   if (!response.ok) {
     throw new Error("Failed to fetch airport suggestions");
   }
