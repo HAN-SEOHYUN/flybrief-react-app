@@ -32,7 +32,7 @@ const ContentWrapper = styled.div`
     "no-results no-results"
     "schedule country"
     "weather weather-summary"
-    "news .";
+    "news news";
   
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
