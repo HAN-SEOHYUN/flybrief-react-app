@@ -1,3 +1,5 @@
+const BASE_URL = import.meta.env.VITE_BASE_URL;
+
 export type AirportSuggestion = {
   id: number;
   iataCode: string;
@@ -6,7 +8,7 @@ export type AirportSuggestion = {
 };
 
 export async function fetchAirportSuggestions(keyword: string): Promise<AirportSuggestion[]> {
-  const response = await fetch(`http://98.83.105.239:8080/api/airports/search?keyword=${encodeURIComponent(keyword)}`);
+  const response = await fetch(`${BASE_URL}/airports/search?keyword=${encodeURIComponent(keyword)}`);
   if (!response.ok) {
     throw new Error("Failed to fetch airport suggestions");
   }

@@ -1,4 +1,4 @@
-// src/api/weatherApi.ts
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export type WeatherForecast = {
   dateTime: string;
@@ -17,7 +17,7 @@ export type WeatherForecast = {
 
 export async function fetchWeatherForecast(iataCode: string, startDate: string, endDate: string): Promise<WeatherForecast[]> {
   const response = await fetch(
-    `http://98.83.105.239:8080/api/weather/forecast?iataCode=${encodeURIComponent(iataCode)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`
+    `${BASE_URL}/weather/forecast?iataCode=${encodeURIComponent(iataCode)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`
   );
 
   if (!response.ok) {
@@ -35,7 +35,7 @@ export async function fetchWeatherForecast(iataCode: string, startDate: string, 
 
 export async function fetchWeatherSummary(iataCode: string, startDate: string, endDate: string): Promise<string> {
   const response = await fetch(
-    `http://98.83.105.239:8080/api/weather/summary?iataCode=${encodeURIComponent(iataCode)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`
+    `${BASE_URL}/weather/summary?iataCode=${encodeURIComponent(iataCode)}&startDate=${encodeURIComponent(startDate)}&endDate=${encodeURIComponent(endDate)}`
   );
 
   if (!response.ok) {
