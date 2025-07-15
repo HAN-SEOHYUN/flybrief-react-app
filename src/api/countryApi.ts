@@ -1,3 +1,4 @@
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 export type CountryInfo = {
   iso3: string;
   iso2: string;
@@ -29,7 +30,7 @@ export type CountryInfo = {
 };
 
 export async function fetchCountryInfo(iso3: string): Promise<CountryInfo> {
-  const response = await fetch(`http://98.83.105.239:8080/api/country/info?iataCode=${encodeURIComponent(iso3)}`);
+  const response = await fetch(`${BASE_URL}/country/info?iataCode=${encodeURIComponent(iso3)}`);
   
   if (!response.ok) {
     throw new Error("Failed to fetch country info");
@@ -46,7 +47,7 @@ export async function fetchCountryInfo(iso3: string): Promise<CountryInfo> {
 
 export async function fetchCountryAccidentNews(iataCode: string): Promise<string> {
   const response = await fetch(
-    `http://98.83.105.239:8080/api/country/news?iataCode=${encodeURIComponent(iataCode)}`
+    `${BASE_URL}/country/news?iataCode=${encodeURIComponent(iataCode)}`
   );
 
   if (!response.ok) {
