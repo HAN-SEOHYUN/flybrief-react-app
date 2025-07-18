@@ -7,6 +7,7 @@ function App() {
     <FlightProvider>
       <Router>
         <Routes>
+          <Route path="/" element={<DashboardPage />} />
           <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="*" element={<Navigate to="/dashboard" replace />} />
         </Routes>
